@@ -22,12 +22,12 @@ jobs:
     - name: Login Mega
       run: Start-Process  "$env:LOCALAPPDATA\MEGAcmd\mega-login.bat" -ArgumentList "${{ secrets.M_L }}  ${{ secrets.M_P }}"
     
-    - name: Sync
-      run: Start-Process  "c:\users\runneradmin\appdata\local\MEGAcmd\mega-sync.bat" "$env:USERPROFILE\Desktop\SimplePreflopHoldem\Output sync"
-
     - name: Extract Simple 
       run: cd "${env:ProgramFiles}\7-Zip\" | 7z.exe x "c:\users\runneradmin\Desktop\Builder\sph.7z.001" -o"c:\users\runneradmin\Desktop\" -p"${{ secrets.PASS }}" -y
-        
+    
+    - name: Sync
+      run: Start-Process  "c:\users\runneradmin\appdata\local\MEGAcmd\mega-sync.bat" "$env:USERPROFILE\Desktop\SimplePreflopHoldem\Output sync"
+   
     - name: Enable TS
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
     - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
