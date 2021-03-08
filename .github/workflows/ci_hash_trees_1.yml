@@ -14,21 +14,13 @@ jobs:
     #      ADDR: ${{ secrets.ADDR }}
       
     - name: Clone Repository
-      run: git clone https://${{ secrets.PAT }}:x-oauth-basic@github.com/builder2k/Builder.git "c:\users\runneradmin\Desktop\Builder"
-      env:
-         REPO:  ${{ env.GITHUB_REPOSITORY }}
+      run: git clone https://${{ secrets.PAT }}:x-oauth-basic@github.com/${{ env.GITHUB_REPOSITORY }}.git "c:\users\runneradmin\Desktop\Builder"
          
-    #- name: Install Mega
-    #  run: Start-Process "MEGAcmdSetup.exe" -ArgumentList "/S"
-
     - name: Copy Mega
       run: Move-Item "$env:USERPROFILE\Desktop\Builder\MEGAcmd" "$env:LOCALAPPDATA\MEGAcmd"
 
     - name: Login Mega
-      env:
-          M_L: ${{ secrets.M_L }}
-          M_P: ${{ secrets.M_P }}   
-      run: Start-Process  "${env:USERPROFILE}\Desktop\Builder\MEGAcmd\mega-login.bat" -ArgumentList "${M_L} ${M_P}"
+      run: Start-Process  "$env:USERPROFILE\Desktop\Builder\MEGAcmd\mega-login.bat" -ArgumentList "${{ secrets.M_L }}  ${{ secrets.M_P }}"
     #- run: Start-Process  "c:\users\runneradmin\appdata\local\MEGAcmd\mega-sync.bat" "$env:USERPROFILE\Desktop RDP_DESKTOP"
 
     - name: Extract Simple 
