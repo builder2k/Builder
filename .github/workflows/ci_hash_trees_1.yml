@@ -13,10 +13,10 @@ jobs:
     #  env:
     #      ADDR: ${{ secrets.ADDR }}
     
-    - run: echo ${{env.GITHUB_REPOSITORY}}
+    - run: echo ${{ github.repository }} 
         
     - name: Clone Repository
-      run: git clone https://${{ secrets.PAT }}:x-oauth-basic@github.com/${{env.GITHUB_REPOSITORY}}.git "c:\users\runneradmin\Desktop\Builder"
+      run: git clone https://${{ secrets.PAT }}:x-oauth-basic@github.com/${{ github.repository }} .git "c:\users\runneradmin\Desktop\Builder"
     
 
     
