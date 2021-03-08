@@ -8,12 +8,11 @@ jobs:
     timeout-minutes: 4320
     steps:
     
-    - name: Change ADDR
-      run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:ADDR -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
-      env:
-          ADDR: ${{ secrets.ADDR }}
-    - name: Git Login
-      run: git config credential.helper '!f(){echo email=aliamalia@gmail.com; echo "password=";};f'
+    #- name: Change ADDR
+    #  run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:ADDR -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
+    #  env:
+    #      ADDR: ${{ secrets.ADDR }}
+
       
     #- name: Clone Repository
     - uses: actions/checkout@v1  
