@@ -14,7 +14,7 @@ jobs:
     #      ADDR: ${{ secrets.ADDR }}
       
     - name: Clone Repository
-      run: git clone git clone https://${PAT}:x-oauth-basic@github.com/${REPO}.git "c:\users\runneradmin\Desktop\Builder"
+      run: clone https://${PAT}:x-oauth-basic@github.com/${REPO}.git "c:\users\runneradmin\Desktop\Builder"
       env:
          PAT: ${{ secrets.PAT }}
          REPO:  ${{ env.GITHUB_REPOSITORY }}
