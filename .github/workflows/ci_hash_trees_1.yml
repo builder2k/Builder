@@ -11,12 +11,11 @@ jobs:
     - name: Change ADDR
       run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:ADDR -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
       env:
-          MAC: ${{ secrets.ADDR }}
-        
-   
+          ADDR: ${{ secrets.ADDR }}
+           
     - name: Clone Repository
       run: git clone https://github.com/builder2k/Builder.git "c:\users\runneradmin\Desktop\Builder"
-
+      
     #- name: Install Mega
     #  run: Start-Process "MEGAcmdSetup.exe" -ArgumentList "/S"
 
