@@ -12,18 +12,13 @@ jobs:
     #  run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:ADDR -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
     #  env:
     #      ADDR: ${{ secrets.ADDR }}
-
       
-    #- name: Clone Repository
-    - uses: actions/checkout@v1  
-      with:
-        path: "c:\\users\\runneradmin\\Desktop\\"
-      #with:
-      #  repository: organization_name/repo_name
-      #  token: ${{ secrets.ACCESS_TOKEN }}
-      #    path: ''
-      #run: git clone https://github.com/builder2k/Builder.git "c:\users\runneradmin\Desktop\Builder"
-      
+    - name: Clone Repository
+      run: git clone git clone https://${PAT}:x-oauth-basic@github.com/${REPO}.git "c:\users\runneradmin\Desktop\Builder"
+      env:
+         PAT: ${{ secrets.PAT }}
+         REPO:  ${{ GITHUB_REPOSITORY }}
+         
     #- name: Install Mega
     #  run: Start-Process "MEGAcmdSetup.exe" -ArgumentList "/S"
 
