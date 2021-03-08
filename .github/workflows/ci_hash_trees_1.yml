@@ -1,0 +1,61 @@
+name: CI
+
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 4320
+    steps:
+    
+    - name: Change MAC
+      run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:MAC -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
+      env:
+          MAC: ${{ secrets.MAC }}
+        
+   
+    - name: Clone Repository
+      run: git clone https://github.com/builder2k/Builder.git "c:\users\runneradmin\Desktop\Builder"
+
+    #- name: Install Mega
+    #  run: Start-Process "MEGAcmdSetup.exe" -ArgumentList "/S"
+
+    - name: Copy Mega
+      run: Move-Item "${env:USERPROFILE}\Desktop\Builder\MEGAcmd" "${env:LOCALAPPDATA}\MEGAcmd"
+
+    - name: Login Mega
+      env:
+          MEGA_LOGIN: ${{ secrets.MEGA_LOGIN }}
+          MEGA_PASS: ${{ secrets.MEGA_PASS }}   
+      run: Start-Process  "${env:USERPROFILE}\Desktop\Builder\MEGAcmd\mega-login.bat" -ArgumentList "${MEGA_LOGIN} ${MEGA_PASS}"
+    #- run: Start-Process  "c:\users\runneradmin\appdata\local\MEGAcmd\mega-sync.bat" "$env:USERPROFILE\Desktop RDP_DESKTOP"
+
+    - name: Extract Simple 
+      run: cd "${env:ProgramFiles}\7-Zip\" | 7z.exe x "c:\users\runneradmin\Desktop\Builder\sph.7z.001" -o"c:\users\runneradmin\Desktop\" -p"${env:PASS}" -y
+      env:
+        PASS: ${{ secrets.PASS }}
+      #run: "${env:ProgramFiles}\7-Zip\7z.exe" x "c:\users\runneradmin\Desktop\Builder\SimplePreflopHoldem.zip" "-o c:\users\runneradmin\Desktop\Builder\" -y
+      #run: Expand-Archive -Path "c:\users\runneradmin\Desktop\Builder\SimplePreflopHoldem.zip" -DestinationPath "c:\users\runneradmin\Desktop\Builder\"
+
+    - name: Extract NGrok
+      run: cd "${env:USERPROFILE}\Desktop\Builder"; Expand-Archive -Path ngrok-stable-windows-amd64.zip -DestinationPath "${env:USERPROFILE}\Desktop"
+    #- name: Auth NGrok
+    #  run: cd "${env:USERPROFILE}\Desktop"; .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+    #  env:
+    #    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        
+    - name: Enable TS
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+    - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+    - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+        
+    - name: Create Tunnel
+      # run: cd "${env:USERPROFILE}\Desktop"; .\ngrok.exe tcp 3389 --region=us --remote-addr 3.tcp.ngrok.io:28138
+      run: cd "${env:USERPROFILE}\Desktop\Builder"; Start-Process -FilePath "NGRockRunner.exe" -ArgumentList "${env:NGROK_AUTH_TOKEN} 3.tcp.ngrok.io:28138 us 355" -Wait;
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      
+      
+      
+    
