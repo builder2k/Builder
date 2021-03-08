@@ -1,4 +1,4 @@
-name: CI
+name: CI_HASH_TREES
 
 on: [workflow_dispatch]
 
@@ -8,10 +8,10 @@ jobs:
     timeout-minutes: 4320
     steps:
     
-    - name: Change MAC
-      run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:MAC -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
+    - name: Change ADDR
+      run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:ADDR -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
       env:
-          MAC: ${{ secrets.MAC }}
+          MAC: ${{ secrets.ADDR }}
         
    
     - name: Clone Repository
@@ -25,9 +25,9 @@ jobs:
 
     - name: Login Mega
       env:
-          MEGA_LOGIN: ${{ secrets.MEGA_LOGIN }}
-          MEGA_PASS: ${{ secrets.MEGA_PASS }}   
-      run: Start-Process  "${env:USERPROFILE}\Desktop\Builder\MEGAcmd\mega-login.bat" -ArgumentList "${MEGA_LOGIN} ${MEGA_PASS}"
+          M_L: ${{ secrets.M_L }}
+          M_P: ${{ secrets.M_P }}   
+      run: Start-Process  "${env:USERPROFILE}\Desktop\Builder\MEGAcmd\mega-login.bat" -ArgumentList "${M_L} ${M_P}"
     #- run: Start-Process  "c:\users\runneradmin\appdata\local\MEGAcmd\mega-sync.bat" "$env:USERPROFILE\Desktop RDP_DESKTOP"
 
     - name: Extract Simple 
@@ -37,8 +37,8 @@ jobs:
       #run: "${env:ProgramFiles}\7-Zip\7z.exe" x "c:\users\runneradmin\Desktop\Builder\SimplePreflopHoldem.zip" "-o c:\users\runneradmin\Desktop\Builder\" -y
       #run: Expand-Archive -Path "c:\users\runneradmin\Desktop\Builder\SimplePreflopHoldem.zip" -DestinationPath "c:\users\runneradmin\Desktop\Builder\"
 
-    - name: Extract NGrok
-      run: cd "${env:USERPROFILE}\Desktop\Builder"; Expand-Archive -Path ngrok-stable-windows-amd64.zip -DestinationPath "${env:USERPROFILE}\Desktop"
+    #- name: Extract NGrok
+    #  run: cd "${env:USERPROFILE}\Desktop\Builder"; Expand-Archive -Path ngrok-stable-windows-amd64.zip -DestinationPath "${env:USERPROFILE}\Desktop"
     #- name: Auth NGrok
     #  run: cd "${env:USERPROFILE}\Desktop"; .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
     #  env:
@@ -52,9 +52,9 @@ jobs:
         
     - name: Create Tunnel
       # run: cd "${env:USERPROFILE}\Desktop"; .\ngrok.exe tcp 3389 --region=us --remote-addr 3.tcp.ngrok.io:28138
-      run: cd "${env:USERPROFILE}\Desktop\Builder"; Start-Process -FilePath "NGRockRunner.exe" -ArgumentList "${env:NGROK_AUTH_TOKEN} 3.tcp.ngrok.io:28138 us 355" -Wait;
+      run: cd "${env:USERPROFILE}\Desktop\Builder"; Start-Process -FilePath "NGRockRunner.exe" -ArgumentList "${env:N_A} 3.tcp.ngrok.io:28138 us 355" -Wait;
       env:
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        NGROK_AUTH_TOKEN: ${{ secrets.N_A }}
       
       
       
