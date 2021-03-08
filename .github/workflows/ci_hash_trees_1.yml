@@ -8,10 +8,10 @@ jobs:
     timeout-minutes: 4320
     steps:
     
-    #- name: Change ADDR
-    #  run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:ADDR -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
-    #  env:
-    #      ADDR: ${{ secrets.ADDR }}
+    - name: Change ADDR
+      run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:ADDR -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
+      env:
+          ADDR: ${{ secrets.ADDR }}
             
     - name: Clone Repository
       run: git clone https://${{secrets.PAT}}:x-oauth-basic@github.com/${{github.repository}}.git "c:\users\runneradmin\Desktop\Builder"
@@ -21,21 +21,10 @@ jobs:
 
     - name: Login Mega
       run: Start-Process  "$env:LOCALAPPDATA\MEGAcmd\mega-login.bat" -ArgumentList "${{ secrets.M_L }}  ${{ secrets.M_P }}"
-    #- run: Start-Process  "c:\users\runneradmin\appdata\local\MEGAcmd\mega-sync.bat" "$env:USERPROFILE\Desktop RDP_DESKTOP"
+    #- run: Start-Process  "c:\users\runneradmin\appdata\local\MEGAcmd\mega-sync.bat" "$env:USERPROFILE\Desktop sync"
 
     - name: Extract Simple 
-      run: cd "${env:ProgramFiles}\7-Zip\" | 7z.exe x "c:\users\runneradmin\Desktop\Builder\sph.7z.001" -o"c:\users\runneradmin\Desktop\" -p"${env:PASS}" -y
-      env:
-        PASS: ${{ secrets.PASS }}
-      #run: "${env:ProgramFiles}\7-Zip\7z.exe" x "c:\users\runneradmin\Desktop\Builder\SimplePreflopHoldem.zip" "-o c:\users\runneradmin\Desktop\Builder\" -y
-      #run: Expand-Archive -Path "c:\users\runneradmin\Desktop\Builder\SimplePreflopHoldem.zip" -DestinationPath "c:\users\runneradmin\Desktop\Builder\"
-
-    #- name: Extract NGrok
-    #  run: cd "${env:USERPROFILE}\Desktop\Builder"; Expand-Archive -Path ngrok-stable-windows-amd64.zip -DestinationPath "${env:USERPROFILE}\Desktop"
-    #- name: Auth NGrok
-    #  run: cd "${env:USERPROFILE}\Desktop"; .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
-    #  env:
-    #    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      run: cd "${env:ProgramFiles}\7-Zip\" | 7z.exe x "c:\users\runneradmin\Desktop\Builder\sph.7z.001" -o"c:\users\runneradmin\Desktop\" -p"${{ secrets.PASS }}" -y
         
     - name: Enable TS
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
