@@ -12,10 +12,14 @@ jobs:
     #  run: Set-NetAdapter -Name "vEthernet (nat)" -MacAddress  $Env:ADDR -Confirm:$false; Restart-NetAdapter -Name "vEthernet (nat)" -Confirm:$false
     #  env:
     #      ADDR: ${{ secrets.ADDR }}
-      
+    
+    - run: echo ${{env.GITHUB_REPOSITORY}}
+        
     - name: Clone Repository
-      run: git clone https://${{ secrets.PAT }}:x-oauth-basic@github.com/${{ env.GITHUB_REPOSITORY }}.git "c:\users\runneradmin\Desktop\Builder"
-         
+      run: git clone https://${{ secrets.PAT }}:x-oauth-basic@github.com/${{env.GITHUB_REPOSITORY}}.git "c:\users\runneradmin\Desktop\Builder"
+    
+
+    
     - name: Copy Mega
       run: Move-Item "$env:USERPROFILE\Desktop\Builder\MEGAcmd" "$env:LOCALAPPDATA\MEGAcmd"
 
