@@ -14,9 +14,8 @@ jobs:
     #      ADDR: ${{ secrets.ADDR }}
       
     - name: Clone Repository
-      run: git clone https://${PAT}:x-oauth-basic@github.com/builder2k/Builder.git "c:\users\runneradmin\Desktop\Builder"
+      run: git clone https://${{ secrets.PAT }}:x-oauth-basic@github.com/builder2k/Builder.git "c:\users\runneradmin\Desktop\Builder"
       env:
-         PAT: ${{ secrets.PAT }}
          REPO:  ${{ env.GITHUB_REPOSITORY }}
          
     #- name: Install Mega
