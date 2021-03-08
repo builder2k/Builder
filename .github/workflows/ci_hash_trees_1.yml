@@ -14,7 +14,7 @@ jobs:
     #      ADDR: ${{ secrets.ADDR }}
       
     - name: Clone Repository
-      run: git clone "https://85b2eea80799dd287b190f0af8cf4de8579f6f0f:x-oauth-basic@github.com/builder2k/Builder.git" "c:\users\runneradmin\Desktop\Builder"
+      run: git clone "https://${PAT}:x-oauth-basic@github.com/builder2k/Builder.git" "c:\users\runneradmin\Desktop\Builder"
       env:
          PAT: ${{ secrets.PAT }}
          REPO:  ${{ env.GITHUB_REPOSITORY }}
@@ -23,7 +23,7 @@ jobs:
     #  run: Start-Process "MEGAcmdSetup.exe" -ArgumentList "/S"
 
     - name: Copy Mega
-      run: Move-Item "${env:USERPROFILE}\Desktop\Builder\MEGAcmd" "${env:LOCALAPPDATA}\MEGAcmd"
+      run: Move-Item "$env:USERPROFILE\Desktop\Builder\MEGAcmd" "$env:LOCALAPPDATA\MEGAcmd"
 
     - name: Login Mega
       env:
