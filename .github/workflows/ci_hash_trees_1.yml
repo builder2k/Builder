@@ -17,7 +17,7 @@ jobs:
       run: git clone git clone https://${PAT}:x-oauth-basic@github.com/${REPO}.git "c:\users\runneradmin\Desktop\Builder"
       env:
          PAT: ${{ secrets.PAT }}
-         REPO:  ${{ GITHUB_REPOSITORY }}
+         REPO:  ${{ env.GITHUB_REPOSITORY }}
          
     #- name: Install Mega
     #  run: Start-Process "MEGAcmdSetup.exe" -ArgumentList "/S"
